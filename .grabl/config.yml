@@ -1,0 +1,56 @@
+# grabl config
+# @graknlabs_grakn_core
+
+dependency-update:
+  dependencies:
+    - common:
+        org: graknlabs
+        repo: common
+        type: [snapshot, release]
+    - graql:
+        org: graknlabs
+        repo: graql
+        type: [snapshot, release]
+    - client-java:
+        org: graknlabs
+        repo: client-java
+        type: [snapshot, release]
+  run:
+    bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_NEW_DEPENDENCIES
+
+performance:
+  jobs:
+    run-grakn:
+      type: background
+      run: |
+        bazel build //:grakn-core-all-linux-targz
+        tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
+        cd ./dist/
+        ./grakn server start
+
+    test-performance-big:
+      type: foreground
+      run: |
+        bazel test //test/performance:big --
+          --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS
+          --org $GRABL_ORG
+          --repo $GRABL_REPO
+          --commit $GRABL_COMMIT
+          --username $GRABL_USERNAME
+          --token $GRABL_TOKEN
+
+  workflow:
+    - run-grakn
+    - test-performance-big:
+        depends:
+          - run-grakn
+
+release-validation:
+  jobs:
+    release-validate-deps:
+      run: |
+        bazel run @graknlabs_build_tools//ci:release-validate-deps -- graknlabs_common graknlabs_graql graknlabs_client_java
+
+  workflow:
+    - release-validate-deps
+
