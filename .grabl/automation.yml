@@ -50,36 +50,40 @@ build:
         machine: ubuntu-19.10
         type: background
         script: |
-          bazel build //:grakn-core-all-linux-targz
-          tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
-          cd ./dist/
-          ./grakn server start
+          # bazel build //:grakn-core-all-linux-targz
+          # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
+          # cd ./dist/
+          # ./grakn server start
+          echo 'run-grakn-1'
       run-grakn-2:
         machine: ubuntu-19.10
         type: background
         script: |
-          bazel build //:grakn-core-all-linux-targz
-          tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
-          ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
+          # bazel build //:grakn-core-all-linux-targz
+          # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
+          # ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
+          echo 'run-grakn-2'
       run-grakn-3:
         machine: ubuntu-19.10
         type: background
         script: |
-          bazel build //:grakn-core-all-linux-targz
-          tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
-          cd ./dist/
-          ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
+          # bazel build //:grakn-core-all-linux-targz
+          # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
+          # cd ./dist/
+          # ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
+          echo 'run-grakn-3'
       test-performance-big:
         machine: ubuntu-19.10
         type: foreground
         script: |
-          bazel test //test/performance:big --
-            --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
-            --org $GRABL_ORG
-            --repo $GRABL_REPO
-            --commit $GRABL_COMMIT
-            --username $GRABL_USERNAME
-            --token $GRABL_TOKEN
+          # bazel test //test/performance:big --
+          #   --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
+          #   --org $GRABL_ORG
+          #   --repo $GRABL_REPO
+          #   --commit $GRABL_COMMIT
+          #   --username $GRABL_USERNAME
+          #   --token $GRABL_TOKEN
+          echo 'test-performance-big'
     execution:
       - run-grakn-1
       - run-grakn-2:
