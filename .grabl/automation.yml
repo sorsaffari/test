@@ -12,13 +12,13 @@ sync:
   validation:
     jobs:
       sync-validate-compilation:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: foreground
         script: |
           bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
           bazel build //...
       sync-validate-correctness:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: foreground
         script: |
           bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
@@ -28,7 +28,7 @@ sync:
       - sync-validate-correctness
   update:
     job:
-      machine: ubuntu-19.10
+      machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
       type: foreground
       script: |
         bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
@@ -39,7 +39,7 @@ build:
   static-analysis:
     job:
       dependency-analysis:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: foreground
         script: bazel run @graknlabs_build_tools//analysis:dependency -- graql@graknlabs_graql protocol@graknlabs_protocol client-java@graknlabs_client_java
         # export $GRABL_DEPENDENCIES_STATUS="graql@123,protocol@234,client-java@345"
@@ -47,7 +47,7 @@ build:
   performance:
     jobs:
       run-grakn-1:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: background
         script: |
           # bazel build //:grakn-core-all-linux-targz
@@ -56,7 +56,7 @@ build:
           # ./grakn server start
           echo 'run-grakn-1'
       run-grakn-2:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: background
         script: |
           # bazel build //:grakn-core-all-linux-targz
@@ -64,7 +64,7 @@ build:
           # ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
           echo 'run-grakn-2'
       run-grakn-3:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: background
         script: |
           # bazel build //:grakn-core-all-linux-targz
@@ -73,7 +73,7 @@ build:
           # ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
           echo 'run-grakn-3'
       test-performance-big:
-        machine: ubuntu-19.10
+        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: foreground
         script: |
           # bazel test //test/performance:big --
@@ -96,7 +96,7 @@ build:
 release:
   validation:
     job:
-      machine: ubuntu-19.10
+      machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
       type: foreground
       script: |
         bazel run @graknlabs_build_tools//ci:release-validate-deps -- graknlabs_common graknlabs_graql graknlabs_protocol
@@ -105,6 +105,6 @@ release:
     execution:
   bump:
     job:
-      machine: ubuntu-19.10
+      machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
       type: foreground
       script: bazel run @graknlabs_build_tools//ci:version-bump
