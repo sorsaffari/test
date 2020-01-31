@@ -54,7 +54,7 @@ build:
           # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
           # cd ./dist/
           # ./grakn server start
-          eecho 'run-grakn-1'
+          echo 'run-grakn-1'
       run-grakn-2:
         machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
         type: background
