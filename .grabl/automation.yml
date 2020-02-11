@@ -12,13 +12,13 @@ sync:
   validation:
     jobs:
       sync-validate-compilation:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: foreground
         script: |
           bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
           bazel build //...
       sync-validate-correctness:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: foreground
         script: |
           bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
@@ -28,7 +28,7 @@ sync:
       - sync-validate-correctness
   update:
     job:
-      machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+      machine: ubuntu-19.10
       type: foreground
       script: |
         bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
@@ -39,51 +39,81 @@ build:
   static-analysis:
     job:
       dependency-analysis:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: foreground
         script: bazel run @graknlabs_build_tools//analysis:dependency -- graql@graknlabs_graql protocol@graknlabs_protocol client-java@graknlabs_client_java
         # export $GRABL_DEPENDENCIES_STATUS="graql@123,protocol@234,client-java@345"
         # grabl.io/events/automation/graknlabs/grakn/edbea56/build/static-anlaysis/dependency -- graql@123, protocol@234, client-java@345
+  correctness:
+    type: external
   performance:
     jobs:
       run-grakn-1:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: background
+        timeout: "1800"
         script: |
-          # bazel build //:grakn-core-all-linux-targz
-          # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
-          # cd ./dist/
-          # ./grakn server start
-          echo 'run-grakn-1'
+          sudo apt update -y
+          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+          git clone https://github.com/graknlabs/grakn.git
+          cd grakn
+          bazel build //:assemble-linux-targz
+          mkdir dist
+          tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
+          cd ./dist/grakn-core-all-linux/
+          ./grakn server start
       run-grakn-2:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: background
+        timeout: "1800"
         script: |
-          # bazel build //:grakn-core-all-linux-targz
-          # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
-          # ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
-          echo 'run-grakn-2'
+          sudo apt update -y
+          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+          git clone https://github.com/graknlabs/grakn.git
+          cd grakn
+          bazel build //:assemble-linux-targz
+          mkdir dist
+          tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
+          cd ./dist/grakn-core-all-linux/
+          ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
       run-grakn-3:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: background
+        timeout: "1800"
         script: |
-          # bazel build //:grakn-core-all-linux-targz
-          # tar -xf ./bazel-bin/grakn-core-all-linux.targz -C ./dist/
-          # cd ./dist/
-          # ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
-          echo 'run-grakn-3'
+          sudo apt update -y
+          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+          git clone https://github.com/graknlabs/grakn.git
+          cd grakn
+          bazel build //:assemble-linux-targz
+          mkdir dist
+          tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
+          cd ./dist/grakn-core-all-linux/
+          ./grakn server start join $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
       test-performance-big:
-        machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+        machine: ubuntu-19.10
         type: foreground
         script: |
-          # bazel test //test/performance:big --
-          #   --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
-          #   --org $GRABL_ORG
-          #   --repo $GRABL_REPO
-          #   --commit $GRABL_COMMIT
-          #   --username $GRABL_USERNAME
-          #   --token $GRABL_TOKEN
-          echo 'test-performance-big'
+          sudo apt update -y
+          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+          git clone https://github.com/graknlabs/grakn.git
+          cd grakn
+          bazel test @graknlabs_simulation//:run --
+            --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_1_ADDRESS
+            --org $GRABL_ORG
+            --repo $GRABL_REPO
+            --commit $GRABL_COMMIT
+            --username $GRABL_USERNAME
+            --token $GRABL_TOKEN
+            --iterations 100000
     execution:
       - run-grakn-1
       - run-grakn-2:
@@ -96,7 +126,7 @@ build:
 release:
   validation:
     job:
-      machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+      machine: ubuntu-19.10
       type: foreground
       script: |
         bazel run @graknlabs_build_tools//ci:release-validate-deps -- graknlabs_common graknlabs_graql graknlabs_protocol
@@ -105,6 +135,6 @@ release:
     execution:
   bump:
     job:
-      machine: projects/ubuntu-os-cloud/global/images/ubuntu-1910-eoan-v20191022
+      machine: ubuntu-19.10
       type: foreground
       script: bazel run @graknlabs_build_tools//ci:version-bump
