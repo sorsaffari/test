@@ -72,22 +72,22 @@ build:
     type: external
   performance:
     jobs:
-      # run-grakn:
-      #   machine: ubuntu-19.10
-      #   type: background
-      #   timeout: "1800"
-      #   script: |
-      #     sudo apt update -y
-      #     sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-      #     curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-      #     bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
-      #     git clone https://github.com/graknlabs/grakn.git
-      #     cd grakn
-      #     bazel build //:assemble-linux-targz
-      #     mkdir dist
-      #     tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
-      #     cd ./dist/grakn-core-all-linux/
-      #     ./grakn server start
+      run-grakn:
+        machine: ubuntu-19.10
+        type: background
+        timeout: "1800"
+        script: |
+          sudo apt update -y
+          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+          git clone https://github.com/graknlabs/grakn.git
+          cd grakn
+          bazel build //:assemble-linux-targz
+          mkdir dist
+          tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
+          cd ./dist/grakn-core-all-linux/
+          ./grakn server start
       test-performance-big:
         machine: ubuntu-19.10
         type: foreground
@@ -99,13 +99,13 @@ build:
           bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
-          bazel test @graknlabs_simulation//:run --
-            --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS
-            --org $GRABL_ORG
-            --repo $GRABL_REPO
-            --commit $GRABL_COMMIT
-            --username $GRABL_USERNAME
-            --token $GRABL_TOKEN
+          bazel run @graknlabs_simulation//:run -- \
+            --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS \
+            --org $GRABL_ORG \
+            --repo $GRABL_REPO \
+            --commit $GRABL_COMMIT \
+            --username $GRABL_USERNAME \
+            --token $GRABL_TOKEN \
             --iterations 50
     execution:
       # - run-grakn
