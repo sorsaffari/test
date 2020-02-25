@@ -12,7 +12,7 @@ sync:
   validation:
     jobs:
       sync-validate-compilation:
-        machine: ubuntu-19.10
+        machine: ubuntu-1910
         type: foreground
         script: |
           sudo apt update -y
@@ -24,7 +24,7 @@ sync:
           bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
           bazel build //...
       # sync-validate-correctness:
-      #   machine: ubuntu-19.10
+      #   machine: ubuntu-1910
       #   type: foreground
       #   script: |
       #     sudo apt update -y
@@ -40,7 +40,7 @@ sync:
       # - sync-validate-correctness
   update:
     job:
-      machine: ubuntu-19.10
+      machine: ubuntu-1910
       type: foreground
       script: |
         sudo apt update -y
@@ -56,7 +56,7 @@ build:
   static-analysis:
     job:
       dependency-analysis:
-        machine: ubuntu-19.10
+        machine: ubuntu-1910
         type: foreground
         script: |
           sudo apt update -y
@@ -73,7 +73,7 @@ build:
   performance:
     jobs:
       run-grakn:
-        machine: ubuntu-19.10
+        machine: ubuntu-1910
         type: background
         timeout: "1800"
         script: |
@@ -89,7 +89,7 @@ build:
           cd ./dist/grakn-core-all-linux/
           ./grakn server start
       test-performance-big:
-        machine: ubuntu-19.10
+        machine: ubuntu-1910
         type: foreground
         timeout: "1800"
         script: |
@@ -115,7 +115,7 @@ build:
 release:
   validation:
     job:
-      machine: ubuntu-19.10
+      machine: ubuntu-1910
       type: foreground
       script: |
         bazel run @graknlabs_build_tools//ci:release-validate-deps -- graknlabs_common graknlabs_graql graknlabs_protocol
@@ -124,6 +124,6 @@ release:
     execution:
   bump:
     job:
-      machine: ubuntu-19.10
+      machine: ubuntu-1910
       type: foreground
       script: bazel run @graknlabs_build_tools//ci:version-bump
