@@ -34,18 +34,19 @@ sync:
         bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
         bazel run @graknlabs_build_tools//sync-dependencies-npm $GRABL_DEPENDENCIES_NEW           # graql@abc123 protocol@bcd234
         # Committing and pushing to the upstream repo should be done by Grabl
-
 build:
   static-analysis:
     job:
       dependency-analysis:
         machine: ubuntu-1910
         type: foreground
-        script: bazel run @graknlabs_build_tools//analysis:dependency -- graql@graknlabs_graql protocol@graknlabs_protocol client-java@graknlabs_client_java
-        # export $GRABL_DEPENDENCIES_STATUS="graql@123,protocol@234,client-java@345"
-        # grabl.io/events/automation/graknlabs/grakn/edbea56/build/static-anlaysis/dependency -- graql@123, protocol@234, client-java@345
+        script: echo hello
   correctness:
-    type: external
+    job:
+      build:
+        machine: ubuntu-1910
+        type: foreground
+        script: echo hello
   performance:
     jobs:
       run-grakn-1:
@@ -68,7 +69,6 @@ build:
       run-grakn-2:
         machine: ubuntu-1910
         type: background
-        timeout: "1800"
         script: |
           echo hello
           # sudo apt update -y
@@ -85,7 +85,6 @@ build:
       run-grakn-3:
         machine: ubuntu-1910
         type: background
-        timeout: "1800"
         script: |
           echo hello
           # sudo apt update -y
