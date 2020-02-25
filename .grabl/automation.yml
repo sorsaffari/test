@@ -68,8 +68,6 @@ build:
           bazel run @graknlabs_build_tools//analysis:dependency -- graql@graknlabs_graql protocol@graknlabs_protocol client-java@graknlabs_client_java
           # export $GRABL_DEPENDENCIES_STATUS="graql@123,protocol@234,client-java@345"
           # grabl.io/events/automation/graknlabs/grakn/edbea56/build/static-anlaysis/dependency -- graql@123, protocol@234, client-java@345
-  correctness:
-    type: external
   performance:
     jobs:
       run-grakn:
