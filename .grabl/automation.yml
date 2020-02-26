@@ -60,6 +60,7 @@ build:
       dependency-analysis:
         machine: ubuntu-1910
         type: foreground
+        timeout: "1800"
         script: |
           sudo apt update -y
           sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
