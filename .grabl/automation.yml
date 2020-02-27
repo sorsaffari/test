@@ -104,7 +104,7 @@ build:
           cd grakn
           bazel run @graknlabs_simulation//:simulation -- \
             --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS \
-            --grabl-uri $GRABL_URI \
+            --tracing-uri $GRABL_URI \
             --org $GRABL_OWNER \
             --repo $GRABL_REPO \
             --commit $GRABL_COMMIT \
