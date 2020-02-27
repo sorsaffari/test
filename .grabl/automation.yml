@@ -8,69 +8,69 @@ config:
     - protocol: [snapshot, release]
     - client-java: release
 
-sync:
-  validation:
-    jobs:
-      sync-validate-compilation:
-        machine: ubuntu-1910
-        type: foreground
-        timeout: "1800"
-        script: |
-          sudo apt update -y
-          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
-          git clone https://github.com/graknlabs/grakn.git
-          cd grakn
-          bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
-          bazel build //...
-      # sync-validate-correctness:
-      #   machine: ubuntu-1910
-      #   type: foreground
-      #   script: |
-      #     sudo apt update -y
-      #     sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-      #     curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-      #     bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
-      #     git clone https://github.com/graknlabs/grakn.git
-      #     cd grakn
-      #     bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
-      #     bazel build //test/basic-correctness
-    execution:
-      - sync-validate-compilation
-      # - sync-validate-correctness
-  update:
-    job:
-      machine: ubuntu-1910
-      type: foreground
-      timeout: "1800"
-      script: |
-        sudo apt update -y
-        sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-        curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-        bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
-        git clone https://github.com/graknlabs/grakn.git
-        cd grakn
-        bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
-        bazel run @graknlabs_build_tools//sync-dependencies-npm $GRABL_DEPENDENCIES_NEW           # graql@abc123 protocol@bcd234
-        # Committing and pushing to the upstream repo should be done by Grabl
+# sync:
+#   validation:
+#     jobs:
+#       sync-validate-compilation:
+#         machine: ubuntu-1910
+#         type: foreground
+#         timeout: "1800"
+#         script: |
+#           sudo apt update -y
+#           sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+#           curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+#           bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+#           git clone https://github.com/graknlabs/grakn.git
+#           cd grakn
+#           bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
+#           bazel build //...
+#       # sync-validate-correctness:
+#       #   machine: ubuntu-1910
+#       #   type: foreground
+#       #   script: |
+#       #     sudo apt update -y
+#       #     sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+#       #     curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+#       #     bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+#       #     git clone https://github.com/graknlabs/grakn.git
+#       #     cd grakn
+#       #     bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
+#       #     bazel build //test/basic-correctness
+#     execution:
+#       - sync-validate-compilation
+#       # - sync-validate-correctness
+#   update:
+#     job:
+#       machine: ubuntu-1910
+#       type: foreground
+#       timeout: "1800"
+#       script: |
+#         sudo apt update -y
+#         sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+#         curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+#         bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+#         git clone https://github.com/graknlabs/grakn.git
+#         cd grakn
+#         bazel run @graknlabs_build_tools//sync-dependencies-bazel $GRABL_DEPENDENCIES_NEW         # graql@abc123 protocol@bcd234
+#         bazel run @graknlabs_build_tools//sync-dependencies-npm $GRABL_DEPENDENCIES_NEW           # graql@abc123 protocol@bcd234
+#         # Committing and pushing to the upstream repo should be done by Grabl
 build:
-  static-analysis:
-    job:
-      dependency-analysis:
-        machine: ubuntu-1910
-        type: foreground
-        timeout: "1800"
-        script: |
-          sudo apt update -y
-          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
-          git clone https://github.com/graknlabs/grakn.git
-          cd grakn
-          bazel run @graknlabs_build_tools//analysis:dependency -- graql@graknlabs_graql protocol@graknlabs_protocol client-java@graknlabs_client_java
-          # export $GRABL_DEPENDENCIES_STATUS="graql@123,protocol@234,client-java@345"
-          # grabl.io/events/automation/graknlabs/grakn/edbea56/build/static-anlaysis/dependency -- graql@123, protocol@234, client-java@345
+  # static-analysis:
+  #   job:
+  #     dependency-analysis:
+  #       machine: ubuntu-1910
+  #       type: foreground
+  #       timeout: "1800"
+  #       script: |
+  #         sudo apt update -y
+  #         sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
+  #         curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+  #         bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
+  #         git clone https://github.com/graknlabs/grakn.git
+  #         cd grakn
+  #         bazel run @graknlabs_build_tools//analysis:dependency -- graql@graknlabs_graql protocol@graknlabs_protocol client-java@graknlabs_client_java
+  #         # export $GRABL_DEPENDENCIES_STATUS="graql@123,protocol@234,client-java@345"
+  #         # grabl.io/events/automation/graknlabs/grakn/edbea56/build/static-anlaysis/dependency -- graql@123, protocol@234, client-java@345
   performance:
     jobs:
       run-grakn:
@@ -89,6 +89,8 @@ build:
           tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
           cd ./dist/grakn-core-all-linux/
           ./grakn server start
+          export GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS="${HOSTNAME}:48555"
+          
       test-performance-big:
         machine: ubuntu-1910
         type: foreground
@@ -100,18 +102,19 @@ build:
           bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
-          bazel run @graknlabs_simulation//:run -- \
-            --grakn-address $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS \
-            --org $GRABL_ORG \
+          bazel run @graknlabs_simulation//:simulation -- \
+            --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS \
+            --grabl-uri $GRABL_URI \
+            --org $GRABL_OWNER \
             --repo $GRABL_REPO \
             --commit $GRABL_COMMIT \
-            --username $GRABL_USERNAME \
+            --username $GRABL_OWNER \
             --token $GRABL_TOKEN \
             --iterations 50
     execution:
-      # - run-grakn
-      - test-performance-big
-          # depends: [run-grakn]
+      - run-grakn
+      - test-performance-big:
+          depends: [run-grakn]
 
 release:
   validation:
