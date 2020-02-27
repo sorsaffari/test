@@ -103,6 +103,7 @@ build:
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
           bazel run @graknlabs_simulation//:simulation -- \
+            --keyspace simulation
             --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS \
             --tracing-uri $GRABL_URI \
             --org $GRABL_OWNER \
