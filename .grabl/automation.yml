@@ -89,7 +89,7 @@ build:
           tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
           cd ./dist/grakn-core-all-linux/
           ./grakn server start
-          export GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS="${HOSTNAME}:48555"
+          export GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS=$(curl --fail --silent http://ipinfo.io/ip)
           
       test-performance-big:
         machine: ubuntu-1910
