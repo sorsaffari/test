@@ -89,7 +89,7 @@ build:
           tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
           cd ./dist/grakn-core-all-linux/
           ./grakn server start
-          export GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS=$(curl --fail --silent http://ipinfo.io/ip)
+          export GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS=${HOSTNAME}
           
       test-performance-big:
         machine: ubuntu-1910
@@ -103,7 +103,7 @@ build:
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
           bazel run @graknlabs_simulation//:simulation -- \
-            --keyspace simulation
+            --keyspace simulation \
             --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_ADDRESS \
             --tracing-uri $GRABL_URI \
             --org $GRABL_OWNER \
