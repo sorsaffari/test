@@ -74,14 +74,10 @@ build:
   performance:
     jobs:
       run-grakn:
-        machine: ubuntu-1910
+        machine: grabl-ubuntu-1910
         type: background
         timeout: "1800"
         script: |
-          sudo apt update -y
-          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
           bazel build //:assemble-linux-targz
@@ -96,10 +92,6 @@ build:
         type: foreground
         timeout: "1800"
         script: |
-          sudo apt update -y
-          sudo apt install -y openjdk-8-jdk pkg-config zip g++ zlib1g-dev unzip python
-          curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
-          bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh && hash -r
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
           bazel run @graknlabs_simulation//:simulation -- \
