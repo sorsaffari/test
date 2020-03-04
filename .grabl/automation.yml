@@ -88,7 +88,7 @@ build:
           export GRABL_PERFORMANCE_RUN_GRAKN_URI="${HOSTNAME}:48555"
           
       test-performance-big:
-        machine: ubuntu-1910
+        machine: grabl-ubuntu-1910
         type: foreground
         timeout: "1800"
         script: |
