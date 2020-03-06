@@ -18,6 +18,8 @@ build:
         script: |
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
+          git fetch
+          git checkout -b origin/simulation-fixing
           bazel build //:assemble-linux-targz
           mkdir dist
           tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
@@ -32,6 +34,8 @@ build:
         script: |
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
+          git fetch
+          git checkout -b origin/simulation-fixing
           bazel run @graknlabs_simulation//:simulation -- \
             --keyspace simulation \
             --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_URI \
