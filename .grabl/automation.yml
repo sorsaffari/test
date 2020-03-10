@@ -19,12 +19,12 @@ build:
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
           git fetch
-          git checkout origin/simulation-fixing
+          git checkout origin/add-grabl-tracing
           bazel build //:assemble-linux-targz
           mkdir dist
           tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
           cd ./dist/grakn-core-all-linux/
-          ./grakn server start
+          ./grakn server start --tracing --tracing-uri $GRABL_URI --username $GRABL_OWNER --api-token $GRABL_TOKEN
           export GRABL_PERFORMANCE_RUN_GRAKN_URI="${HOSTNAME}:48555"
           
       test-performance-big:
@@ -35,7 +35,7 @@ build:
           git clone https://github.com/graknlabs/grakn.git
           cd grakn
           git fetch
-          git checkout origin/simulation-fixing
+          git checkout origin/add-grabl-tracing
           bazel run @graknlabs_simulation//:simulation -- \
             --keyspace simulation \
             --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_URI \
