@@ -45,7 +45,7 @@ build:
             --commit $GRABL_COMMIT \
             --username $GRABL_OWNER \
             --api-token $GRABL_TOKEN \
-            --iterations 50 \
+            --iterations 5 \
             --seed 1
     execution:
       - run-grakn
