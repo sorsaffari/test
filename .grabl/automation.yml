@@ -12,7 +12,7 @@ build:
   performance:
     jobs:
       run-grakn:
-        machine: graknlabs-ubuntu-1910
+        machine: grabl-ubuntu-1910
         type: background
         timeout: "1800"
         script: |
@@ -32,7 +32,7 @@ build:
           export GRABL_PERFORMANCE_RUN_GRAKN_URI="${HOSTNAME}:48555"
           
       test-performance-big:
-        machine: graknlabs-ubuntu-1910
+        machine: grabl-ubuntu-1910
         type: foreground
         timeout: "1800"
         script: |
@@ -59,7 +59,7 @@ build:
 release:
   validation:
     job:
-      machine: graknlabs-ubuntu-1910
+      machine: ubuntu-1910
       type: foreground
       script: |
         bazel run @graknlabs_build_tools//ci:release-validate-deps -- graknlabs_common graknlabs_graql graknlabs_protocol
@@ -68,6 +68,6 @@ release:
     execution:
   bump:
     job:
-      machine: graknlabs-ubuntu-1910
+      machine: ubuntu-1910
       type: foreground
       script: bazel run @graknlabs_build_tools//ci:version-bump
