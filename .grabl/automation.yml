@@ -71,3 +71,4 @@ release:
       machine: ubuntu-1910
       type: foreground
       script: bazel run @graknlabs_build_tools//ci:version-bump
+
