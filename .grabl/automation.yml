@@ -1,74 +1,69 @@
-# grabl config 
-# @graknlabs_grakn_core
-
-config:
-  version-candidate: ./VERSION
-  dependencies:
-    - graql: [snapshot, release]
-    - protocol: [snapshot, release]
-    - client-java: release
-
 build:
+  quality:
+    job:
+      dependency-analysis:
+        machine: grabl-ubuntu-1910
+        type: foreground
+        script: |
+          echo "workflow quality: dependency-analysis"
+  correctness:
+    job:
+      build:
+        machine: grabl-ubuntu-1910
+        type: foreground
+        script: |
+          echo "workflow correctness: build"
   performance:
     jobs:
-      run-grakn:
+      run-grakn-1:
         machine: grabl-ubuntu-1910
         type: background
         timeout: "1800"
         script: |
-          git clone https://github.com/graknlabs/grakn.git
-          cd grakn
-          git fetch
-          git checkout origin/add-grabl-tracing
-          bazel build //:assemble-linux-targz
-          mkdir dist
-          tar -xf ./bazel-bin/grakn-core-all-linux.tar.gz -C ./dist/
-          cd ./dist/grakn-core-all-linux/
-          ./grakn server start -- \
-            --tracing-enabled \
-            --tracing-uri $GRABL_URI \
-            --tracing-username $GRABL_OWNER \
-            --tracing-access-token $GRABL_TOKEN
-          export GRABL_PERFORMANCE_RUN_GRAKN_URI="${HOSTNAME}:48555"
-          
-      test-performance-big:
+          echo "workflow performance: run-grakn-1"
+      run-grakn-2:
         machine: grabl-ubuntu-1910
-        type: foreground
-        timeout: "1800"
+        type: background
         script: |
-          git clone https://github.com/graknlabs/grakn.git
-          cd grakn
-          git fetch
-          git checkout origin/add-grabl-tracing
-          bazel run @graknlabs_simulation//:simulation -- \
-            --keyspace simulation \
-            --grakn-uri $GRABL_PERFORMANCE_RUN_GRAKN_URI \
-            --tracing-uri $GRABL_URI \
-            --org $GRABL_OWNER \
-            --repo $GRABL_REPO \
-            --commit $GRABL_COMMIT \
-            --username $GRABL_OWNER \
-            --api-token $GRABL_TOKEN \
-            --iterations 1 \
-            --seed 1
+          echo "workflow performance: run-grakn-2"
+      run-grakn-3:
+        machine: grabl-ubuntu-1910
+        type: background
+        script: |
+          echo "workflow performance: run-grakn-3"
+      test-performance-big:
+        machine: ubuntu-1910
+        type: foreground
+        script: |
+          echo "workflow performance: test-performance-big"
     execution:
-      - run-grakn
+      - run-grakn-1
+      - run-grakn-2:
+          depends: [run-grakn-1]
+      - run-grakn-3:
+          depends: [run-grakn-1]
       - test-performance-big:
-          depends: [run-grakn]
+          depends: [run-grakn-1, run-grakn-2, run-grakn-3]
 
 release:
   validation:
     job:
-      machine: ubuntu-1910
-      type: foreground
-      script: |
-        bazel run @graknlabs_build_tools//ci:release-validate-deps -- graknlabs_common graknlabs_graql graknlabs_protocol
+      validate-dependencies:
+        machine: grabl-ubuntu-1910
+        type: foreground
+        script: |
+          echo "workflow validation: validate-dependencies"
   deployment:
-    jobs:
-    execution:
+    job:
+      deploy-workbase:
+        machine: grabl-ubuntu-1910
+        type: foreground
+        script: |
+          echo "workflow deployment: deploy-workbase"
   bump:
     job:
-      machine: ubuntu-1910
-      type: foreground
-      script: bazel run @graknlabs_build_tools//ci:version-bump
-
+      bump-version:
+        machine: grabl-ubuntu-1910
+        type: foreground
+        script: |
+          echo "workflow bump: bump-version"
