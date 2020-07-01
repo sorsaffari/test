@@ -2,37 +2,37 @@ build:
   quality:
     job:
       dependency-analysis:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: foreground
         script: |
           echo "workflow quality: dependency-analysis"
   correctness:
     job:
       build:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: foreground
         script: |
           echo "workflow correctness: build"
   performance:
     jobs:
       run-grakn-1:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: background
         timeout: "1800"
         script: |
           echo "workflow performance: run-grakn-1"
       run-grakn-2:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: background
         script: |
           echo "workflow performance: run-grakn-2"
       run-grakn-3:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: background
         script: |
           echo "workflow performance: run-grakn-3"
       test-performance-big:
-        machine: ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: foreground
         script: |
           echo "workflow performance: test-performance-big"
@@ -49,21 +49,21 @@ release:
   validation:
     job:
       validate-dependencies:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: foreground
         script: |
           echo "workflow validation: validate-dependencies"
   deployment:
     job:
       deploy-workbase:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: foreground
         script: |
           echo "workflow deployment: deploy-workbase"
   bump:
     job:
       bump-version:
-        machine: grabl-ubuntu-1910
+        machine: grabl-ubuntu-2004
         type: foreground
         script: |
           echo "workflow bump: bump-version"
