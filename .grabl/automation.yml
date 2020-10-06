@@ -1,112 +1,11 @@
 
 build:
-filter:
-    owner: sorsaffari
-    branch: master
   performance:
     a:
       machine: graknlabs-ubuntu-20.04-long
       script: |
-        for IND in {1..500}
+        for IND in {1..1000}
         do
           echo $IND
+          sleep 0.2s
         done
-  quality:
-    a:
-      machine: graknlabs-ubuntu-20.04-long
-      script: |
-        for IND in {1..500}
-        do
-          echo $IND
-        done
-    b:
-      machine: graknlabs-ubuntu-20.04-long
-      script: |
-        for IND in {1..500}
-        do
-          echo $IND
-        done
-  correctness:
-    filter:
-      owner: sorsaffari
-      branch: [master, development]
-    a:
-      timeout: "18000"
-      machine: graknlabs-ubuntu-20.04-long
-      dependencies: [b]
-      script: |
-        for IND in {1..500}
-        do
-          echo $IND
-        done
-    b:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      dependencies: [c, d]
-      script: |
-        echo 123
-    c:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      dependencies: [e]
-      script: |
-        echo 123
-    d:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      dependencies: [g]
-      script: |
-        echo 123
-    e:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      dependencies: [f]
-      script: |
-        echo 123
-    f:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      dependencies: [d]
-      script: |
-        echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
-                echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
-                echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
-                echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
-                echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
-                echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
-                echo 123   
-    g:
-      machine: graknlabs-ubuntu-20.04-long
-      timeout: "18000"
-      script: |
-        echo 123   
