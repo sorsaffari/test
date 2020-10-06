@@ -1,6 +1,6 @@
 
 build:
-filter:
+  filter:
     owner: sorsaffari
     branch: master
   performance:
